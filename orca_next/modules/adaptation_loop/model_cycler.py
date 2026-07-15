@@ -10,6 +10,8 @@ UTILITY_KEY = "utility"
 OUTPUT_KEY = "model_selection"
 
 class ModelCycler(BaseModule):
+    """Selects the active model by tracking utility and cycling when needed."""
+
     def __init__(
             self, 
             module_id, 
@@ -49,12 +51,14 @@ class ModelCycler(BaseModule):
 
         if utility is not None:
             if utility < self.acceptance_threshold:
+                # Move to the next candidate when the current model underperforms.
                 self.idx = (self.idx + 1) % len(self.models)
                 enable_learning = False  # Disable learning when we switch models
                 AuditLogger.log_event(f"Utility is low ({utility:.3f}), switching to model: {self.models[self.idx]}")
 
                 message_size = ceil(log2(len(self.models)))  # Log the size of the model key message (in bits)
             else:
+                # Keep the current model and allow learning when utility is acceptable.
                 enable_learning = True # Enable learning when utility is above threshold
                 AuditLogger.log_event(f"Utility is sufficient ({utility:.3f}), keeping current model: {self.models[self.idx]}")
 

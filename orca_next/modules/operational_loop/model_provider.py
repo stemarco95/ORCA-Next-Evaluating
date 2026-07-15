@@ -11,6 +11,8 @@ from core.base_module import BaseModule
 from utils.context import Context
 
 class ModelProvider(BaseModule):
+    """Provides the active TD3 model instance to the operational loop."""
+
     def __init__(
             self, 
             module_id, 
@@ -32,6 +34,7 @@ class ModelProvider(BaseModule):
         with open(library_path, 'r') as f:
             self.library = json.load(f)
 
+        # Allow the initial model to be selected from the configured library.
         self.model_key = self.config.get("initial_model", None)
         if self.model_key is None:
             self.model_key = list(self.library.keys())[0]  # Default to the first model in the library if not specified
@@ -39,6 +42,7 @@ class ModelProvider(BaseModule):
         self.model = self._init_model(self.library[self.model_key]["path"])
 
     def _init_model(self, load_path):
+        """Load a model and rebuild minimal runtime state for local execution."""
         if not os.path.exists(load_path):
             raise ValueError(f"Model load path does not exist: {load_path}")
             
@@ -69,12 +73,13 @@ class ModelProvider(BaseModule):
         return model
       
     def save_checkpoint(self, timestep):
-        """Call this within your training loop."""
+        """Persist the current model state for the given timestep."""
         save_path = os.path.join(self.checkpoint_dir, f"{self.current_model_key}_step_{timestep}.zip")
         self.model.save(save_path)
         print(f"Checkpoint saved: {save_path}")
 
     def reset(self):
+        """Return the current model context, reloading it if needed."""
 
         if self.model == None:
             path = self.library[self.model_key]["path"]
@@ -88,6 +93,7 @@ class ModelProvider(BaseModule):
         return {self.outputs[0]: Context.with_info(info=info)}
 
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
+        """Handle reset and selection signals, then expose the active model."""
         if "model_update" in inputs:
             update_ctx = inputs.get("model_update")
 

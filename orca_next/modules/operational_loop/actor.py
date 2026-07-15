@@ -11,7 +11,10 @@ MODEL_KEY = "model"
 
 OUTPUT_CONTEXT = "raw_action"
 
+
 class Actor(BaseModule):
+    """Operational actor that generates actions from observations using a TD3 policy."""
+
     def __init__(
             self, 
             module_id, 
@@ -28,13 +31,14 @@ class Actor(BaseModule):
         self.rng = np.random.default_rng(seed=self.local_seed)
 
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
+        """Compute the next action, optionally adding exploration noise during training."""
         env_state_ctx = inputs.get(ENV_STATE_KEY)
         observation: np.ndarray = env_state_ctx.state
 
         model_ctx = inputs.get(MODEL_KEY)
         model: TD3 = model_ctx.info.get("model")
 
-        # If the system is configured for online training, the actor will receive model update isntructions from the adaptation loop.
+        # If online training is enabled, adaptation provides training flags/noise parameters.
         is_training = False
         if UPDATE_KEY in inputs:
             update_ctx = inputs.get(UPDATE_KEY)

@@ -11,6 +11,8 @@ OUTPUT_KEY = "model_selection"
 DISTURBANCE_KEY = "disturbance"
 
 class PerfectSelector(BaseModule):
+    """Selects a model key from rule mappings when utility drops below a threshold."""
+
     def __init__(
             self, 
             module_id, 
@@ -54,6 +56,8 @@ class PerfectSelector(BaseModule):
         self.idx = 0
 
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
+        """Return the currently selected model and communication cost for this step."""
+
         utility_ctx = inputs.get(UTILITY_KEY)
         utility = utility_ctx.info.get("utility")
         disturbance_ctx = inputs.get(DISTURBANCE_KEY)

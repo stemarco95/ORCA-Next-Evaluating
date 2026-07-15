@@ -9,6 +9,8 @@ MODEL_KEY = "raw_model"
 DISTURBANCE_KEY = "disturbance"
 
 class SoftError(BaseModule):
+    """Injects sparse Gaussian noise into actor parameters."""
+
     def __init__(
             self, 
             module_id, 
@@ -24,9 +26,8 @@ class SoftError(BaseModule):
         self.torch_rng = torch.Generator(device='cpu')
         self.torch_rng.manual_seed(self.local_seed)
 
-        
-
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
+        """Applies the configured soft error disturbance in place."""
 
         disturbance_ctx = inputs.get(DISTURBANCE_KEY, None)    
         model_ctx = inputs.get(MODEL_KEY, None)     

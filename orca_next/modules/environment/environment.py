@@ -12,6 +12,8 @@ ACTION_KEY = "safe_action"
 DISTURBANCE_KEY = "disturbance"
 
 class Environment(BaseModule):
+    """Environment wrapper for stepping, resets, and experience bookkeeping."""
+
     def __init__(
             self, 
             module_id, 
@@ -52,11 +54,11 @@ class Environment(BaseModule):
 
         self.last_observation = None
         self.gathering_experience = True
-        self.safe_mode = False  # Track whether we're currently in safe mode
+        self.safe_mode = False  # When set, the next action is replaced with a safe fallback.
 
 
     def _update_env_config(self, env_ctx: Context):
-        """Update environment configuration based on context inputs (e.g., from disturbance generator)."""
+        """Update the active environment configuration from disturbance context values."""
         if env_ctx:
             target_parameter = env_ctx.info.get("target_parameter")
             value = env_ctx.info.get("value")
@@ -67,17 +69,17 @@ class Environment(BaseModule):
                     self.env_config.update({target_parameter: value})
 
     def reset(self) -> Dict[str, Context]:
-        # Ensure env is configured with current settings 
+        # Re-apply the latest settings before starting a fresh episode.
         self.env.unwrapped.configure(self.env_config)  
 
         obs, info = self.env.reset()
       
-        info["env_reset"] = True  # Include a flag in the info to indicate that this is a reset observation
+        info["env_reset"] = True  # Signal that this observation came from a reset.
 
         self.last_observation = obs
         self.gathering_experience = True
         self.safe_mode = False
-        info["experience"] = None
+        info["experience"] = None  # Reset observations do not produce transitions.
         return {self.outputs[0]: Context(
             state=obs,
             reward=0.0,
@@ -99,25 +101,25 @@ class Environment(BaseModule):
         self._update_env_config(disturbance_ctx)
 
         if self.safe_mode:
-            action = np.array([0.0])  # Override action to a safe action (e.g., no acceleration) when in safe mode
+            action = np.array([0.0])  # Use a neutral action while safe mode is active.
 
         obs, reward, terminated, truncated, info = self.env.step(action)
 
         if self.render:
             sleep(0.02)  # Sleep to slow down rendering for human viewing
 
-        info["env_reset"] = False  # Ensure the env_reset flag is False for all non-reset steps
+        info["env_reset"] = False  # Mark this as a regular step.
         info["shield_intervention"] = shield_intervention
 
-        # If we have a previous observation and we're gathering experience, store the transition in the info dict
+        # Persist the transition only while experience gathering remains enabled.
         if self.last_observation is not None and self.gathering_experience:
             learning_episode_done = terminated or truncated or shield_intervention
             info["experience"] = (self.last_observation, obs, raw_action, reward, learning_episode_done, info)
         else:
             info["experience"] = None
 
-        # If there was a shield intervention, we stop gathering experience until the next reset
-        # Crucial: The transition that includes the shield intervention is still stored in the experience buffer
+        # Stop gathering experience after a shield intervention until the next reset.
+        # The triggering transition is still emitted above for downstream learning.
         if shield_intervention:
             self.gathering_experience = False
             self.safe_mode = True

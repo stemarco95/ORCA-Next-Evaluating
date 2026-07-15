@@ -13,6 +13,8 @@ ENABLE_KEY = "model_selection"  # Key from ModelCycler that indicates if learnin
 OUTPUT_KEY = "model_update"
 
 class Learner(BaseModule):
+    """Learns TD3 updates and reports lightweight adaptation state."""
+
     def __init__(
             self, 
             module_id, 
@@ -54,6 +56,8 @@ class Learner(BaseModule):
         self.count_to_failure = 0
 
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
+        """Process the current cycle and emit the learner update context."""
+
         # 1. Retrieve the Model
         model_ctx = inputs.get(MODEL_KEY)
         if not model_ctx:

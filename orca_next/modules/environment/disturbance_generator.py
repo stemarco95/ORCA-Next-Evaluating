@@ -26,7 +26,8 @@ class DisturbanceGenerator(BaseModule):
             config=None
         ):
         super().__init__(module_id, inputs, outputs, cycle, seed, is_env, config)
-        
+
+        # Step counter used to trigger disturbance events at the configured time.
         self.step_count = 0
  
         self.target_parameter = self.config.get("target_parameter", None)
@@ -39,6 +40,7 @@ class DisturbanceGenerator(BaseModule):
         assert min_val <= self.initial_value <= max_val, f"initial_value for {self.target_parameter} must be between {min_val} and {max_val}"
         self.current_value = self.initial_value  # Initialize current value to the initial value
 
+        # Support both in-memory schedules and schedules loaded from JSON.
         self.disturbances = self.config.get("disturbances", None)
         assert self.disturbances is not None, "disturbances must be specified in the DisturbanceGenerator config"
         assert isinstance(self.disturbances, (list, str)), "disturbances must be a list of disturbance events or a string pointing to a JSON file containing the disturbance schedule"
@@ -66,7 +68,7 @@ class DisturbanceGenerator(BaseModule):
 
     def step(self, inputs: Dict[str, Context]) -> Dict[str, Context]:
         """
-        Advances the simulation by one step and applies any pending disturbances.
+        Advances the simulation by one step and applies the next scheduled disturbance when due.
         """
         self.step_count += 1
 
@@ -83,19 +85,21 @@ class DisturbanceGenerator(BaseModule):
             })}
     
 
-        """Example Config including Disturbance Schedule
+        """Example config for a disturbance schedule.
 
-        "config": {
-            "disturbance_schedule": {
-                "target_parameter": "other_speed",
-                "initial_value": 8.0,
-                "disturbances": [
-                    {"step": 100, "value": 12.0},
-                    {"step": 200, "value": 6.0},
-                    {"step": 300, "value": 10.0}
-                ]
-            }
-        }
+        .. code-block:: json
 
-
+                {
+                    "config": {
+                        "disturbance_schedule": {
+                            "target_parameter": "other_speed",
+                            "initial_value": 8.0,
+                            "disturbances": [
+                                {"step": 100, "value": 12.0},
+                                {"step": 200, "value": 6.0},
+                                {"step": 300, "value": 10.0}
+                            ]
+                        }
+                    }
+                }
         """
