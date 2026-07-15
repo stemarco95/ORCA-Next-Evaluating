@@ -21,8 +21,8 @@ cd ORCA-Next-Evaluating
 Create the virtual environment using the provided requirements file and activate it:
 
 ```bash
-conda create --name orca-env --file conda_requirements.txt
-conda activate orca-env
+conda env create --file environment.yml
+conda activate orca-next
 
 ```
 
@@ -34,7 +34,7 @@ This thesis relies on a customized version of the `highway-env` package. Clone i
 cd ..
 git clone git@github.com:Heberleo/HighwayEnv.git
 cd HighwayEnv
-conda activate orca-env
+conda activate orca-next
 pip install -e .
 
 ```
