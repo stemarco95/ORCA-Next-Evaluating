@@ -1,0 +1,61 @@
+{
+    "mode": "step-based",
+    "max_steps": 75000,
+    "monitor_config_path": "configs/Scenario1/monitoring.json",
+    "monitor_title": "Scenario1-NonAdaptive",
+    "modules": [
+        {
+            "id": "model_provider",
+            "type": "ModelProvider",
+            "inputs": [],
+            "outputs": ["model"],
+            "cycle": 1,
+            "config": {
+                "initial_model": "speed_7.0",
+                "library_path": "configs/model_library.json"
+            }
+        },
+        {
+            "id": "disturbance_generator",
+            "type": "DisturbanceGenerator",
+            "inputs": [],
+            "outputs": ["disturbance"],
+            "cycle": 1,
+            "config": {
+                "target_parameter": "other_speed",
+                "initial_value": 7.0,
+                "disturbances": "configs/Scenario1/disturbance_schedule.json"
+            }
+        },
+        {
+            "id": "actor",
+            "type": "Actor",
+            "inputs": ["model","observation"],
+            "outputs": ["raw_action"],
+            "cycle": 1,
+            "config": {}
+        },
+        {
+            "id": "environment",
+            "type": "Environment",
+            "is_env": true,
+            "inputs": ["safe_action", "disturbance"],
+            "outputs": ["observation"],
+            "cycle": 1, 
+            "config": {
+                "randomize_speed": false,
+                "render": false
+            }
+        },
+        {
+            "id": "shield",
+            "type": "Shield",
+            "inputs": ["raw_action", "observation"],
+            "outputs": ["safe_action"],
+            "cycle": 1,
+            "config": {
+                "enabled": false
+            }
+        }
+    ]
+}

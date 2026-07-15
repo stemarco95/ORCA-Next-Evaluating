@@ -1,0 +1,90 @@
+{
+    "mode": "step-based",
+    "max_steps": 75000,
+    "monitor_config_path": "configs/Scenario4/monitoring.json",
+    "monitor_title": "Scenario4-Failing",
+    "modules": [
+        {
+            "id": "learner",
+            "type": "Learner",
+            "inputs": ["observation", "utility", "model"],
+            "outputs": ["model_update"],
+            "cycle": 1,
+            "config": {
+                "acceptance_threshold": 0.9,
+                "noise_std": 0.1,
+                "learning_starts": 200,
+                "train_freq": 160,
+                "gradient_steps": 40,
+                "batch_size": 256,
+                "learning_rate": 5e-5,
+                "reset_model": false,
+                "failure_step": 35000
+            }
+        },
+        {
+            "id": "model_provider",
+            "type": "ModelProvider",
+            "inputs": ["model_update"],
+            "outputs": ["raw_model"],
+            "cycle": 1,
+            "is_env": true,
+            "config": {
+                "initial_model": "speed_6.0",
+                "library_path": "configs/model_library.json"
+            }
+        },
+        {
+            "id": "soft_error",
+            "type": "SoftError",
+            "inputs": ["raw_model", "disturbance"],
+            "outputs": ["model"],
+            "cycle": 1,
+            "config": {
+            }
+        },
+        {
+            "id": "disturbance_generator",
+            "type": "DisturbanceGenerator",
+            "inputs": [],
+            "outputs": ["disturbance"],
+            "cycle": 1,
+            "config": {
+                "target_parameter": "soft_error",
+                "initial_value": 0.0,
+                "disturbances": "configs/Scenario4/disturbance_schedule.json"
+            }
+        },
+        {
+            "id": "actor",
+            "type": "Actor",
+            "inputs": ["model", "observation"],
+            "outputs": ["raw_action"],
+            "cycle": 1,
+            "config": {}
+        },
+        {
+            "id": "environment",
+            "type": "Environment",
+            "is_env": true,
+            "inputs": ["safe_action", "disturbance"],
+            "outputs": ["observation"],
+            "cycle": 1, 
+            "config": {
+                "randomize_speed": false,
+                "render": false,
+                "other_speed": 6.0
+            }
+        },
+        {
+            "id": "shield",
+            "type": "Shield",
+            "inputs": ["raw_action", "observation"],
+            "outputs": ["safe_action"],
+            "cycle": 1,
+            "config": {
+                "enabled": false
+            }
+        }
+    ]
+}

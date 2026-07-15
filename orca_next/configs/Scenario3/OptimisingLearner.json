@@ -1,0 +1,80 @@
+{
+    "mode": "step-based",
+    "max_steps": 75000,
+    "monitor_config_path": "configs/Scenario3/monitoring.json",
+    "monitor_title": "Scenario3-OptimisingLearner",
+    "modules": [
+        {
+            "id": "learner",
+            "type": "Learner",
+            "inputs": ["observation", "utility", "model"],
+            "outputs": ["model_update"],
+            "cycle": 1,
+            "config": {
+                "acceptance_threshold": 0.9,
+                "noise_std": 1.0,
+                "learning_starts": 200,
+                "train_freq": 160,
+                "gradient_steps": 160,
+                "batch_size": 256,
+                "learning_rate": 1e-3,
+                "reset_model": false
+            }
+        },
+        {
+            "id": "model_provider",
+            "type": "ModelProvider",
+            "inputs": ["model_update"],
+            "outputs": ["model"],
+            "cycle": 1,
+            "is_env": true,
+            "config": {
+                "initial_model": "speed_10.0",
+                "library_path": "configs/model_library.json"
+            }
+        },
+        {
+            "id": "disturbance_generator",
+            "type": "DisturbanceGenerator",
+            "inputs": [],
+            "outputs": ["disturbance"],
+            "cycle": 1,
+            "config": {
+                "target_parameter": "target_distance",
+                "initial_value": 10.0,
+                "disturbances": "configs/Scenario3/disturbance_schedule.json"
+            }
+        },
+        {
+            "id": "actor",
+            "type": "Actor",
+            "inputs": ["model","observation"],
+            "outputs": ["raw_action"],
+            "cycle": 1,
+            "config": {}
+        },
+        {
+            "id": "environment",
+            "type": "Environment",
+            "is_env": true,
+            "inputs": ["safe_action", "disturbance"],
+            "outputs": ["observation"],
+            "cycle": 1, 
+            "config": {
+                "randomize_speed": false,
+                "render": false,
+                "other_speed": 10.0
+            }
+        },
+        {
+            "id": "shield",
+            "type": "Shield",
+            "inputs": ["raw_action", "observation"],
+            "outputs": ["safe_action"],
+            "cycle": 1,
+            "config": {
+                "enabled": false
+            }
+        }
+    ]
+}

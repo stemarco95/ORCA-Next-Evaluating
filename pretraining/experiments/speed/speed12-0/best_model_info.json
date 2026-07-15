@@ -1,0 +1,25 @@
+{
+    "original_path": "./experiments/speed/speed12-0/dist10-0_speed12-0_seed43/checkpoints/best_model.zip",
+    "best_mean_reward": 18.406812063232064,
+    "evaluation_episodes": 10,
+    "all": [
+        {
+            "subdir": "dist10-0_speed12-0_seed42",
+            "model_path": "./experiments/speed/speed12-0/dist10-0_speed12-0_seed42/checkpoints/best_model.zip",
+            "mean_reward": 18.22520691473037,
+            "std_reward": 0.19172998118949847
+        },
+        {
+            "subdir": "dist10-0_speed12-0_seed43",
+            "model_path": "./experiments/speed/speed12-0/dist10-0_speed12-0_seed43/checkpoints/best_model.zip",
+            "mean_reward": 18.406812063232064,
+            "std_reward": 0.20258735279056864
+        },
+        {
+            "subdir": "dist10-0_speed12-0_seed44",
+            "model_path": "./experiments/speed/speed12-0/dist10-0_speed12-0_seed44/checkpoints/best_model.zip",
+            "mean_reward": 18.34745348840952,
+            "std_reward": 0.19268547772232847
+        }
+    ]
+}

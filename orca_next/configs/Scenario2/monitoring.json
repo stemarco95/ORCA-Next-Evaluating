@@ -1,0 +1,121 @@
+{
+    "state_description":
+        {   
+            "operational_state": [
+                {
+                    "name": "reward",
+                    "description": "Reward received at each step",
+                    "message": "observation",
+                    "member": "reward",
+                    "key": null,
+                    "cycle": 1
+                },
+                {
+                    "name": "weight_message_size",
+                    "description": "Size of the weight message in bits.",
+                    "message": "model_update",
+                    "member": "info",
+                    "key": "message_size",
+                    "required": false,
+                    "reset_value": 0.0,
+                    "cycle": 1,
+                    "save": true
+                },
+                {
+                    "name": "weight_distance",
+                    "description": "Distance of the weight message in meters.",
+                    "message": "model_update",
+                    "member": "info",
+                    "key": "weight_distance",
+                    "cycle": 1,
+                    "save": true
+                },
+                {
+                    "name": "distance",
+                    "description": "Distance between the two vehicles.",
+                    "message": "observation",
+                    "member": "info",
+                    "key": "distance",
+                    "cycle": 1,
+                    "save": true
+                }
+            ]
+        },
+    "metrics": [
+        {
+            "name": "reward_normalized",
+            "operation": "Normalization",
+            "description": "Normalizes the reward to be between 0 and 1",
+            "save": false,
+            "plot": false,
+            "min": 0.0,
+            "max": 0.5,
+            "clip": true,
+            "inputs": [
+                {
+                    "name": "reward",
+                    "type": "state"
+                }
+            ]
+        },
+        {
+            "name": "utility",
+            "operation": "SlidingWindowAverage",
+            "description": "Sliding window average of the reward.",
+            "window_size": 80,
+            "save": true,
+            "plot": false,
+            "publish": true,
+            "update_cycle": 80,
+            "plotting_limits": [0.0, 0.5],
+            "initial_value": 0.95,
+            "inputs": [
+                {
+                    "name": "reward_normalized",
+                    "type": "metric"     
+                }
+            ]
+        },
+        {
+            "name": "weight_message_size_normalized",
+            "operation": "Normalization",
+            "save": true,
+            "plot": false,
+            "plotting_limits": [0.0, 1.0],
+            "min": 0.0,
+            "max": 280768.0,
+            "clip": false,
+            "inputs": [
+                {
+                    "name": "weight_message_size",
+                    "type": "state"
+                }
+            ]
+        },
+        {
+            "name": "self-configuration",
+            "operation": "SlidingWindowAverage",
+            "window_size": 80,
+            "save": true,
+            "plot": false,
+            "publish": false,
+            "update_cycle": 80,
+            "plotting_limits": [0.0, 1.0],
+            "inputs": [
+                {
+                    "name": "weight_message_size_normalized",
+                    "type": "metric"
+                }
+            ]
+        }
+
+    ],
+    "scores":
+        {
+            "u_acc": 0.8,
+            "u_target": 0.9,
+            "optim_phase_threshold": 1000,
+            "survival_phase_threshold": 500,
+            "survival_phase_utility_threshold": 0.95
+        }
+}

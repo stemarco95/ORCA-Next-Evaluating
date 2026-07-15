@@ -1,0 +1,4 @@
+Git Hash: 66380ecf8b0b0a2c82bd5078b80b33cf90433c60
+Dirty State: Yes
+Highway Env Version: 13bb718e62c9fc7f1d3df492fc43787d256ff955
+Highway Env Dirty State: No

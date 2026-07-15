@@ -1,0 +1,180 @@
+{
+    "mode": "step-based",
+    "max_steps": 75000,
+    "monitor_config_path": "configs/Scenario1/monitoring.json",
+    "monitor_title": "Scenario1-PerfectSelector",
+    "modules": [
+        {
+            "id": "perfect_selector",
+            "type": "PerfectSelector",
+            "inputs": ["utility", "disturbance"],
+            "outputs": ["model_selection"],
+            "cycle": 160,
+            "config": {
+                "acceptance_threshold": 0.8,    
+                "find_closest": true,
+                "rules": [
+                    {
+                        "model_key": "speed_14.0",
+                        "target_parameter": "other_speed",
+                        "value": 14.0
+                    },
+                    {
+                        "model_key": "speed_13.5",
+                        "target_parameter": "other_speed",
+                        "value": 13.5
+                    },
+                    {
+                        "model_key": "speed_13.0",
+                        "target_parameter": "other_speed",
+                        "value": 13.0
+                    },
+                    {
+                        "model_key": "speed_12.5",
+                        "target_parameter": "other_speed",
+                        "value": 12.5
+                    },
+                    {
+                        "model_key": "speed_12.0",
+                        "target_parameter": "other_speed",
+                        "value": 12.0
+                    },
+                    { 
+                        "model_key": "speed_11.5",
+                        "target_parameter": "other_speed",
+                        "value": 11.5
+                    },
+                    {
+                        "model_key": "speed_11.0",
+                        "target_parameter": "other_speed",
+                        "value": 11.0
+                    },
+                    { 
+                        "model_key": "speed_10.5",
+                        "target_parameter": "other_speed",
+                        "value": 10.5
+                    },
+                    {
+                        "model_key": "speed_10.0",
+                        "target_parameter": "other_speed",
+                        "value": 10.0
+                    },
+                    {
+                        "model_key": "speed_9.5",
+                        "target_parameter": "other_speed",
+                        "value": 9.5
+                    },
+                    {
+                        "model_key": "speed_9.0",
+                        "target_parameter": "other_speed",
+                        "value": 9.0
+                    },
+                    { 
+                        "model_key": "speed_8.5",
+                        "target_parameter": "other_speed",
+                        "value": 8.5
+                    },
+                    {
+                        "model_key": "speed_8.0",
+                        "target_parameter": "other_speed",
+                        "value": 8.0
+                    },
+                    { 
+                        "model_key": "speed_7.5",
+                        "target_parameter": "other_speed",
+                        "value": 7.5
+                    },
+                    {
+                        "model_key": "speed_7.0",
+                        "target_parameter": "other_speed",
+                        "value": 7.0
+                    },
+                    {
+                        "model_key": "speed_6.5",
+                        "target_parameter": "other_speed",
+                        "value": 6.5
+                    },
+                    {
+                        "model_key": "speed_6.0",
+                        "target_parameter": "other_speed",
+                        "value": 6.0
+                    },
+                    {
+                        "model_key": "speed_5.5",
+                        "target_parameter": "other_speed",
+                        "value": 5.5
+                    },
+                    {
+                        "model_key": "speed_5.0",
+                        "target_parameter": "other_speed",
+                        "value": 5.0
+                    },
+                    {
+                        "model_key": "speed_4.5",
+                        "target_parameter": "other_speed",
+                        "value": 4.5
+                    },
+                    {
+                        "model_key": "speed_4.0",
+                        "target_parameter": "other_speed",
+                        "value": 4.0
+                    }
+                ],
+                "initial_model": "speed_7.0"
+            }
+        },
+        {
+            "id": "model_provider",
+            "type": "ModelProvider",
+            "inputs": ["model_selection"],
+            "outputs": ["model"],
+            "cycle": 1,
+            "config": {
+                "initial_model": "speed_7.0",
+                "library_path": "configs/model_library.json"
+            }
+        },
+        {
+            "id": "disturbance_generator",
+            "type": "DisturbanceGenerator",
+            "inputs": [],
+            "outputs": ["disturbance"],
+            "cycle": 1,
+            "config": {
+                "target_parameter": "other_speed",
+                "initial_value": 7.0,
+                "disturbances": "configs/Scenario1/disturbance_schedule.json"
+            }
+        },
+        {
+            "id": "actor",
+            "type": "Actor",
+            "inputs": ["model","observation"],
+            "outputs": ["raw_action"],
+            "cycle": 1,
+            "config": {}
+        },
+        {
+            "id": "environment",
+            "type": "Environment",
+            "is_env": true,
+            "inputs": ["safe_action", "disturbance"],
+            "outputs": ["observation"],
+            "cycle": 1, 
+            "config": {
+                "randomize_speed": false,
+                "render": false
+            }
+        },
+        {
+            "id": "shield",
+            "type": "Shield",
+            "inputs": ["raw_action", "observation"],
+            "outputs": ["safe_action"],
+            "cycle": 1,
+            "config": {
+                "enabled": false
+            }
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{   
+            "base": {
+                "path": "../pretraining/experiments/speed/generalize/best_model.zip"
+            },
+            "speed_4.0": {
+                "path": "../pretraining/experiments/speed/speed4-0/best_model.zip"
+            },
+            "speed_4.5": {
+                "path": "../pretraining/experiments/speed/speed4-5/best_model.zip"
+            },
+            "speed_5.0": {
+                "path": "../pretraining/experiments/speed/speed5-0/best_model.zip"
+            },
+            "speed_5.5": {
+                "path": "../pretraining/experiments/speed/speed5-5/best_model.zip"
+            },
+            "speed_6.0": {
+                "path": "../pretraining/experiments/speed/speed6-0/best_model.zip"
+            },
+            "speed_6.5": {
+                "path": "../pretraining/experiments/speed/speed6-5/best_model.zip"
+            },
+            "speed_7.0": {
+                "path": "../pretraining/experiments/speed/speed7-0/best_model.zip"
+            },
+            "speed_7.5": {
+                "path": "../pretraining/experiments/speed/speed7-5/best_model.zip"
+            },
+            "speed_8.0": {
+                "path": "../pretraining/experiments/speed/speed8-0/best_model.zip"
+            },
+            "speed_8.5": {
+                "path": "../pretraining/experiments/speed/speed8-5/best_model.zip"
+            },
+            "speed_9.0": {
+                "path": "../pretraining/experiments/speed/speed9-0/best_model.zip"
+            },
+            "speed_9.5": {
+                "path": "../pretraining/experiments/speed/speed9-5/best_model.zip"
+            },
+            "speed_10.0": {
+                "path": "../pretraining/experiments/speed/speed10-0/best_model.zip"
+            },
+            "speed_10.5": {
+                "path": "../pretraining/experiments/speed/speed10-5/best_model.zip"
+            },
+            "speed_11.0": {
+                "path": "../pretraining/experiments/speed/speed11-0/best_model.zip"
+            },
+            "speed_11.5": {
+                "path": "../pretraining/experiments/speed/speed11-5/best_model.zip"
+            },
+            "speed_12.0": {
+                "path": "../pretraining/experiments/speed/speed12-0/best_model.zip"
+            },
+            "speed_12.5": {
+                "path": "../pretraining/experiments/speed/speed12-5/best_model.zip"
+            },
+            "speed_13.0": {
+                "path": "../pretraining/experiments/speed/speed13-0/best_model.zip"
+            },
+            "speed_13.5": {
+                "path": "../pretraining/experiments/speed/speed13-5/best_model.zip"
+            },
+            "speed_14.0": {
+                "path": "../pretraining/experiments/speed/speed14-0/best_model.zip"
+            },
+            "obs_x_offset_-1.0": {
+                "path": "../pretraining/experiments/obs_x_offset/-1-0/best_model.zip"
+            },
+            "obs_x_offset_-2.0": {
+                "path": "../pretraining/experiments/obs_x_offset/-2-0/best_model.zip"
+            },
+            "obs_x_offset_-3.0": {
+                "path": "../pretraining/experiments/obs_x_offset/-3-0/best_model.zip"
+            },
+            "obs_x_offset_-4.0": {
+                "path": "../pretraining/experiments/obs_x_offset/-4-0/best_model.zip"
+            },
+            "obs_x_offset_-5.0": {
+                "path": "../pretraining/experiments/obs_x_offset/-5-0/best_model.zip"
+            },
+            "obs_x_offset_1.0": {
+                "path": "../pretraining/experiments/obs_x_offset/1-0/best_model.zip"
+            },
+            "obs_x_offset_2.0": {
+                "path": "../pretraining/experiments/obs_x_offset/2-0/best_model.zip"
+            },
+            "obs_x_offset_3.0": {
+                "path": "../pretraining/experiments/obs_x_offset/3-0/best_model.zip"
+            },
+            "obs_x_offset_4.0": {
+                "path": "../pretraining/experiments/obs_x_offset/4-0/best_model.zip"
+            },
+            "obs_x_offset_5.0": {
+                "path": "../pretraining/experiments/obs_x_offset/5-0/best_model.zip"
+            }
+}

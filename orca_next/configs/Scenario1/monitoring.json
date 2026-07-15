@@ -1,0 +1,111 @@
+{
+    "state_description":
+        {   
+            "operational_state": [
+                {
+                    "name": "reward",
+                    "description": "Reward received at each step",
+                    "message": "observation",
+                    "member": "reward",
+                    "key": null,
+                    "cycle": 1
+                },
+                {
+                    "name": "model_configuration_effort",
+                    "description": "Effort spent on self-configuration by the model provider",
+                    "message": "model_selection",
+                    "member": "info",
+                    "required": false,
+                    "reset_value": 0.0,
+                    "key": "message_size",
+                    "cycle": 1
+                },
+                {
+                    "name": "distance",
+                    "description": "Distance between the two vehicles.",
+                    "message": "observation",
+                    "member": "info",
+                    "key": "distance",
+                    "cycle": 1,
+                    "save": true
+                }
+            ]
+        },
+    "metrics": [
+        {
+            "name": "reward_normalized",
+            "operation": "Normalization",
+            "description": "Normalizes the reward to be between 0 and 1",
+            "save": false,
+            "plot": false,
+            "min": 0.0,
+            "max": 0.5,
+            "clip": true,
+            "inputs": [
+                {
+                    "name": "reward",
+                    "type": "state"
+                }
+            ]
+        },
+        {
+            "name": "utility",
+            "operation": "SlidingWindowAverage",
+            "description": "Sliding window average of the reward.",
+            "window_size": 80,
+            "save": true,
+            "plot": false,
+            "publish": true,
+            "update_cycle": 80,
+            "plotting_limits": [0.0, 0.5],
+            "initial_value": 0.95,
+            "inputs": [
+                {
+                    "name": "reward_normalized",
+                    "type": "metric"     
+                }
+            ]
+        },
+        {
+            "name": "selection_message_size_normalized",
+            "operation": "Normalization",
+            "save": true,
+            "plot": false,
+            "plotting_limits": [0.0, 1.0],
+            "min": 0.0,
+            "max": 5.0,
+            "clip": false,
+            "inputs": [
+                {
+                    "name": "model_configuration_effort",
+                    "type": "state"
+                }
+            ]
+        },
+        {
+            "name": "self-configuration",
+            "operation": "SlidingWindowAverage",
+            "window_size": 80,
+            "save": true,
+            "plot": false,
+            "publish": false,
+            "update_cycle": 80,
+            "plotting_limits": [0.0, 1.0],
+            "inputs": [
+                {
+                    "name": "selection_message_size_normalized",
+                    "type": "metric"
+                }
+            ]
+        }
+
+    ],
+    "scores":
+{
+            "u_acc": 0.8,
+            "u_target": 0.9,
+            "optim_phase_threshold": 500,
+            "survival_phase_threshold": 500,
+            "survival_phase_utility_threshold": 0.9
+        }
+}
