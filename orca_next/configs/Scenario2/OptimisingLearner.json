@@ -1,8 +1,8 @@
 {
     "mode": "step-based",
     "max_steps": 75000,
-    "monitor_config_path": "configs/Scenario4/monitoring.json",
-    "monitor_title": "Scenario4-OptimisingLearner",
+    "monitor_config_path": "configs/Scenario2/monitoring.json",
+    "monitor_title": "Scenario2-OptimisingLearner",
     "modules": [
         {
             "id": "learner",
@@ -51,7 +51,7 @@
             "config": {
                 "target_parameter": "soft_error",
                 "initial_value": 0.0,
-                "disturbances": "configs/Scenario4/disturbance_schedule.json"
+                "disturbances": "configs/Scenario2/disturbance_schedule.json"
             }
         },
         {

@@ -542,10 +542,10 @@ def scenario1():
     }
     
     files_to_plot = [
-        "results/scenario-1/log_Scenario1-ModelCycler_2026-06-02_16-36-28.csv",
-        "results/scenario-1/log_Scenario1-NonAdaptive_2026-06-02_16-45-25.csv",
-        "results/scenario-1/log_Scenario1-PerfectSelector_2026-06-02_16-52-19.csv",
-        "results/scenario-1/log_Scenario1-Robust_2026-06-02_16-40-58.csv"
+        "evaluation/scenario-1/log_Scenario1-ModelCycler_2026-06-02_16-36-28.csv",
+        "evaluation/scenario-1/log_Scenario1-NonAdaptive_2026-06-02_16-45-25.csv",
+        "evaluation/scenario-1/log_Scenario1-PerfectSelector_2026-06-02_16-52-19.csv",
+        "evaluation/scenario-1/log_Scenario1-Robust_2026-06-02_16-40-58.csv"
     ]
 
     titles = ["ModelCycler", "Non-Adaptive", "PerfectSelector", "Robust"]
@@ -564,10 +564,10 @@ def scenario2():
     }
 
     files_to_plot = [
-        "results/scenario-2/log_Scenario2-NonAdaptive.csv",
-        "results/scenario-2/log_Scenario2-Failing.csv",
-        "results/scenario-2/log_Scenario2-AdaptiveLearner.csv",
-        "results/scenario-2/log_Scenario2-OptimisingLearner.csv",
+        "evaluation/scenario-2/log_Scenario2-NonAdaptive.csv",
+        "evaluation/scenario-2/log_Scenario2-Failing.csv",
+        "evaluation/scenario-2/log_Scenario2-AdaptiveLearner.csv",
+        "evaluation/scenario-2/log_Scenario2-OptimisingLearner.csv",
     ]
 
     titles = ["Non-Adaptive", "Failing", "Survival-Focus", "Optimization-Focus"]
@@ -586,9 +586,9 @@ def scenario3():
     }
 
     files_to_plot = [
-        "results/scenario-3/log_Scenario3-NonAdaptive.csv",
-        "results/scenario-3/log_Scenario3-AdaptiveLearner.csv",
-        "results/scenario-3/log_Scenario3-OptimisingLearner.csv"
+        "evaluation/scenario-3/log_Scenario3-NonAdaptive.csv",
+        "evaluation/scenario-3/log_Scenario3-AdaptiveLearner.csv",
+        "evaluation/scenario-3/log_Scenario3-OptimisingLearner.csv"
     ]
 
     titles = ["Non-Adaptive", "Survival-Focus", "Optimization-Focus"]
