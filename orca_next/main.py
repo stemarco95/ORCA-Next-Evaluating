@@ -92,8 +92,9 @@ def scenario2():
     
 if __name__ == "__main__":
     scenario1()
-    scenario3()
     scenario2()
+    scenario3()
+
 
 
 
